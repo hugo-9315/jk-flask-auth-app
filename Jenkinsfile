@@ -79,11 +79,11 @@ pipeline {
       }
     }
   }
-  post {
+  /* post {
     always {
       script {
         emailNotifier currentBuild.result
       }
     }  
-  }
+  } */
 }
