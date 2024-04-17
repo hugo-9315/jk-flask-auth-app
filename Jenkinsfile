@@ -2,12 +2,14 @@
 @Library('shared-library')_
 
 pipeline {
+  agent any
+  
   environment {
     ID_DOCKER = "${ID_DOCKER_PARAMS}"
     IMAGE_NAME = "jk-flask-auth-app"
     IMAGE_TAG = "latest"
   }
-  agent none
+
   stages {
     stage('Build image') {
       agent any
@@ -17,6 +19,7 @@ pipeline {
         }
       }
     }
+    
     stage('Run container based on builded image') {
       agent any
       steps {
@@ -30,24 +33,26 @@ pipeline {
         }
       }
     }
+    
     stage('Test image') {
       agent {
-      docker {
-        // Use the same image as your application Dockerfile
-        image 'python:3.8-slim'
-        // Mount the current workspace into the container at /app
-        args '-v $PWD:/app'
+        docker {
+          // Use the same image as your application Dockerfile
+          image 'python:3.8-slim'
+          // Mount the current workspace into the container at /app
+          args '-v $PWD:/app'
+        }
+      }
+      steps {
+        // Run tests inside the Docker container
+        sh '''
+          cd /app  # Change directory to the mounted workspace
+          pip install --no-cache-dir -r requirements.txt  # Install dependencies
+          pytest # Run tests
+        '''
       }
     }
-    steps {
-      // Run tests inside the Docker container
-      sh '''
-        cd /app  # Change directory to the mounted workspace
-        pip install --no-cache-dir -r requirements.txt  # Install dependencies
-        pytest  # Run tests
-      '''
-    }
-    }
+    
     stage('Clean Container') {
       agent any
       steps {
@@ -59,6 +64,7 @@ pipeline {
           }
       }
     }
+    
     stage ('Login and Push Image on docker hub') {
       agent any
       environment {
@@ -69,7 +75,8 @@ pipeline {
           sh '''docker push ${ID_DOCKER}/$IMAGE_NAME:$IMAGE_TAG'''
         }
       }
-    }    
+    }
+    
     stage('Push image in staging and deploy it') {
       when {
         expression { GIT_BRANCH == 'origin/main' }
@@ -89,6 +96,7 @@ pipeline {
       }
     }
   }
+  
   /* post {
     always {
       script {
