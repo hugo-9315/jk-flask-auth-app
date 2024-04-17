@@ -44,9 +44,6 @@ pipeline {
       steps {
         // Run tests inside the Docker container
         sh '''
-            cd /app
-            pwd
-            ls -l
             pip install --no-cache-dir -r requirements.txt
             pytest
         '''
