@@ -37,18 +37,18 @@ pipeline {
     stage('Test image') {
       agent {
         docker {
-          // Use the same image as your application Dockerfile
           image 'python:3.8-slim'
-          // Mount the current workspace into the container at /app
           args '-v $PWD:/app'
         }
       }
       steps {
         // Run tests inside the Docker container
         sh '''
-          cd /app  # Change directory to the mounted workspace
-          pip install --no-cache-dir -r requirements.txt  # Install dependencies
-          pytest # Run tests
+            cd /app
+            pwd
+            ls -l
+            pip install --no-cache-dir -r requirements.txt
+            pytest
         '''
       }
     }
