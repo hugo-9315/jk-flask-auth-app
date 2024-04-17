@@ -39,7 +39,7 @@ pipeline {
         steps {
             script {
                 sh '''
-                curl http://localhost:${PORT_EXPOSED} | grep -q "Login"
+                curl http://localhost:${PORT_EXPOSED} | grep -q "Redirecting..."
                 '''
             }
         }
