@@ -44,7 +44,7 @@ pipeline {
       steps {
         // Run tests inside the Docker container
         sh '''
-            pip install --no-cache-dir --user -r requirements.txt
+            sudo pip install --no-cache-dir --user -r requirements.txt
             pytest
         '''
       }
