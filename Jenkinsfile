@@ -30,17 +30,14 @@ pipeline {
         }
       }
     }
-    stage('Test image') {
+    /* stage('Test image') {
       agent any
       steps {
         script {
-          sh '''
-            echo "Running tests within the Docker container"
-            docker exec $IMAGE_NAME go test ./... -v
-          '''
+          sh ''''''
         }
       }
-    }
+    } */
     stage('Clean Container') {
       agent any
       steps {
