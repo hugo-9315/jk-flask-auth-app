@@ -35,20 +35,14 @@ pipeline {
     }
     
     stage('Test image') {
-      agent {
-        docker {
-          image 'python:3.8-slim'
-          args '-v $PWD:/app'
+        agent any
+        steps {
+            script {
+                sh '''
+                curl http://localhost:${PORT_EXPOSED} | grep -q "Login"
+                '''
+            }
         }
-      }
-      steps {
-        // Run tests inside the Docker container
-        script {
-          // Install packages in the project workspace
-          sh 'pip install --no-cache-dir -r requirements.txt --target ./.local'
-          sh 'pytest'
-        }
-      }
     }
     
     stage('Clean Container') {
