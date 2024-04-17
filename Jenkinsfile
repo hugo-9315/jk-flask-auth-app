@@ -45,7 +45,7 @@ pipeline {
         // Run tests inside the Docker container
         script {
           // Install packages in the project workspace
-          sh 'pip install --no-cache-dir --user -r requirements.txt --target ./.local'
+          sh 'pip install --no-cache-dir -r requirements.txt --target ./.local'
           sh 'pytest'
         }
       }
