@@ -75,7 +75,7 @@ pipeline {
       }
       agent any
       environment {
-        RENDER_STAGING_DEPLOY_HOOK = credentials('render_karma_key')
+        RENDER_STAGING_DEPLOY_HOOK = credentials('render_flask_key')
       }  
       steps {
         script {
