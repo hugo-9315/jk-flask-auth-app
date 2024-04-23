@@ -6,7 +6,7 @@ pipeline {
     DOCKERHUB_PASSWORD = "${PASS_DOCKER_PARAMS}"
     IMAGE_NAME = "jk-flask-auth-app"
     IMAGE_TAG = "latest"
-    PORT_EXPOSED = ${PORT_EXPOSED}
+    PORT_EXPOSED = "${PORT_EXPOSED}"
   }
 
   stages {
